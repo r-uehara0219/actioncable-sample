@@ -1,0 +1,25 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/haragumi/blog", "."]
+  # Push the container image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/haragumi/blog"]
+  # Deploy container image to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      [
+        "beta",
+        "run",
+        "deploy",
+        "blog",
+        "--image",
+        "gcr.io/haragumi/blog",
+        "--region",
+        "asia-east1",
+        "--execution-environment",
+        "gen2",
+      ]
+images:
+  - gcr.io/haragumi/blog

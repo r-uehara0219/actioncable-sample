@@ -1,13 +1,10 @@
 FROM ruby:2.7.6
-EXPOSE 8080
 
 RUN apt-get update -qq \
     && apt-get install -y sqlite3 nodejs npm \
     && rm -rf /var/lib/apt/lists/* \
     && npm install --global yarn
 
-# Download the static build of Litestream directly into the path & make it executable.
-# This is done in the builder and copied as the chmod doubles the size.
 ADD https://github.com/benbjohnson/litestream/releases/download/v0.3.8/litestream-v0.3.8-linux-amd64-static.tar.gz /tmp/litestream.tar.gz
 RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
 
